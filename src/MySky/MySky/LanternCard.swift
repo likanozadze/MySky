@@ -1,5 +1,5 @@
 //
-//  LanternCard.swift
+//  LanternView.swift
 //  MySky
 //
 //  Created by Lika Nozadze on 16/10/2026.
@@ -13,14 +13,26 @@ struct LanternCard: View {
     let title: String
     
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 16) {
             Image(imageName)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 85)
+            
             Text(title)
+            .font(.headline)
+            .fontWeight(.medium)
+            .foregroundColor(.white)
+                               
         }
-        
+        .padding(.vertical, 30)
+        .frame(maxWidth: .infinity)
+        .background(.ultraThinMaterial)
+        .environment(\.colorScheme, .dark)
+        .cornerRadius(28)
     }
 }
 
-//#Preview {
-   // LanternCard(imageName: <#String#>, title: <#String#>)
-//}
+#Preview {
+    LanternView()
+}

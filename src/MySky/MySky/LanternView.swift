@@ -7,8 +7,9 @@
 
 import SwiftUI
 
+
 struct LanternView: View {
-    
+    @State private var selectedLantern: String?
     
     private let lanterns: [(image: String, title: String)] = [
         ("RedLantern", "Health"),
@@ -18,33 +19,79 @@ struct LanternView: View {
     ]
     var body: some View {
         
-        VStack {
-            Text("What would you like to express today")
+        ZStack {
+            LinearGradient(
+                colors: [Color(red: 0.1, green: 0.1, blue: 0.3), .black],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
             
-            LazyVGrid(
-                columns: [
-                    GridItem(.flexible()),
-                    GridItem(.flexible())
-                ],
-                spacing: 60
-            ){
-                ForEach(lanterns, id: \.title) { lantern in
-                    LanternCard(
-                        imageName: lantern.image,
-                        title: lantern.title)
+            
+            VStack(spacing: 30) {
+                Text("What would you like to express today")
+                    .font(.title2)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 40)
+                
+                LazyVGrid(
+                    columns: [
+                        GridItem(.flexible(), spacing: 20),
+                        GridItem(.flexible(), spacing: 20)
+                    ],
+                    spacing: 25
+                ){
+                    ForEach(lanterns, id: \.title) { lantern in
+                        Button {
+                            withAnimation(.spring(response: 0.40, dampingFraction: 0.9)) {
+                                selectedLantern = lantern.title
+                            }
+                        } label: {
+                            LanternCard(
+                                imageName: lantern.image,
+                                title: lantern.title
+                            )
+                            .scaleEffect(
+                                selectedLantern == lantern.title ? 1.04 : 1.0
+                            )
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 28)
+                                    .stroke(
+                                        selectedLantern == lantern.title
+                                        ? .white.opacity(0.65)
+                                        : .clear,
+                                        lineWidth: 1.5
+                                    )
+                            }
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
+                .padding(.horizontal, 25)
+                
+                Spacer()
+                Button(action: {
+                }) {
+                    Text("Tap a lantern to begin")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding(.vertical, 18)
+                        .frame(maxWidth: .infinity)
+                        .background(.ultraThinMaterial)
+                        .environment(\.colorScheme, .dark)
+                        .cornerRadius(20)
+                }
+                .padding(.horizontal, 40)
+                .padding(.bottom, 30)
                 
             }
             
         }
-        
-        Spacer()
-        Button("Tap a lantern to begin") {
-        }
-        
     }
-    
 }
+
 #Preview {
    LanternView()
 }
