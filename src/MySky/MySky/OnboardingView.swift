@@ -59,7 +59,7 @@ struct OnboardingView: View {
         }
     }
 
-    // Ret
+    // Returns the getStarted function only if the current index page is the last page
     private func getStartedAction(for index: Int) -> (() -> Void)? {
         guard index == pages.count - 1 else { return nil }
         return { getStarted() }
