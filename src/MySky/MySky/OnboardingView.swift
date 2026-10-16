@@ -7,6 +7,26 @@
 
 import SwiftUI
 
+// We can change these values to quickly test how the lantern looks and moves
+enum LanternSettings {
+    
+    // Size and glow
+    static let width: CGFloat = 130
+    static let glowColor: Color = .orange
+    static let glowOpacity: Double = 1.0
+    static let glowRadius: CGFloat = 60
+
+    // How far it moves
+    static let floatX: Double = 6
+    static let floatY: Double = 10
+    static let tilt: Double = 2
+
+    // How fast it moves
+    static let speedX: Double = 1.7
+    static let speedY: Double = 1.5
+    static let tiltSpeed: Double = 1.4
+}
+
 struct OnboardingView: View {
     @State private var currentPage = 0
 
@@ -78,6 +98,9 @@ struct OnboardingPage: View {
     let text: String
     var onGetStarted: (() -> Void)? = nil // optional parameter, it's nil on everypage but the last one.
 
+    // If the user has reduceMotion ON, the lantern will not move
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     var body: some View {
         VStack(spacing: 0) {
             
@@ -91,12 +114,27 @@ struct OnboardingPage: View {
 
             Spacer()
 
-            // Center image (we can parametrize this as well, so differetn pages can have a different image)
-            Image("YellowLanternBig")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 130)
-                .shadow(color: .orange.opacity(0.35), radius: 30)
+            // TimelineView to draw and animate the lantern.
+            TimelineView(.animation) { context in
+                let time = context.date.timeIntervalSinceReferenceDate
+                let motion: Double = reduceMotion ? 0 : 1
+
+                Image("YellowLanternBig")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: LanternSettings.width)
+                    .shadow(
+                        color: LanternSettings.glowColor.opacity(LanternSettings.glowOpacity),
+                        radius: LanternSettings.glowRadius
+                    )
+                    // Offset to move it
+                    .offset(
+                        x: sin(time * LanternSettings.speedX) * LanternSettings.floatX * motion,
+                        y: cos(time * LanternSettings.speedY) * LanternSettings.floatY * motion
+                    )
+                    // Rotation effect to tilt it
+                    .rotationEffect(.degrees(sin(time * LanternSettings.tiltSpeed) * LanternSettings.tilt * motion))
+            }
 
             Spacer()
             
