@@ -27,8 +27,6 @@ struct LanternCard: View {
         }
         .padding(.vertical, 30)
         .frame(maxWidth: .infinity)
-        .background(.ultraThinMaterial)
-        .environment(\.colorScheme, .dark)
         .cornerRadius(28)
     }
 }

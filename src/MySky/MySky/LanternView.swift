@@ -20,13 +20,10 @@ struct LanternView: View {
     var body: some View {
         
         ZStack {
-            LinearGradient(
-                colors: [Color(red: 0.1, green: 0.1, blue: 0.3), .black],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
-            
+            Image("AppBackground")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
             
             VStack(spacing: 30) {
                 Text("What would you like to express today")
@@ -79,8 +76,7 @@ struct LanternView: View {
                         .foregroundColor(.white)
                         .padding(.vertical, 18)
                         .frame(maxWidth: .infinity)
-                        .background(.ultraThinMaterial)
-                        .environment(\.colorScheme, .dark)
+                        
                         .cornerRadius(20)
                 }
                 .padding(.horizontal, 40)
