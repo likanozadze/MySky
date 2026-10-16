@@ -18,72 +18,44 @@ struct LanternView: View {
         ("PinkLantern", "Love")
     ]
     var body: some View {
-        
-        ZStack {
-            Image("AppBackground")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-            
-            VStack(spacing: 50) {
-                Text("What would you like to express today")
-                    .font(.title2)
-                    .fontWeight(.medium)
-                    .foregroundStyle(.white)
-                    .multilineTextAlignment(.center)
-                    .frame(maxWidth: 320)
-                    .padding(.top, 24)
+        NavigationStack {
+            ZStack {
+                Image("AppBackground")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
                 
-                LazyVGrid(
-                    columns: [
-                        GridItem(.flexible(), spacing: 20),
-                        GridItem(.flexible(), spacing: 20)
-                    ],
-                    spacing: 18
-                ){
-                    ForEach(lanterns, id: \.title) { lantern in
-                        Button {
-                            withAnimation(.spring(response: 0.40, dampingFraction: 0.9)) {
-                                selectedLantern = lantern.title
+                VStack(spacing: 40) {
+                    Spacer()
+                    
+                    Text("What would you like to express today?")
+                        .font(.title2)
+                        .fontWeight(.medium)
+                        .foregroundStyle(.white)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: 320)
+                   
+                    
+                    LazyVGrid(
+                        columns: [
+                            GridItem(.flexible(), spacing: 20),
+                            GridItem(.flexible(), spacing: 20)
+                        ],
+                        spacing: 18
+                    ){
+                        ForEach(lanterns, id: \.title) { lantern in
+                            
+                            NavigationLink(destination: WriteWishView(selectedLanternImage: lantern.image)) {
+                                LanternCard (imageName: lantern.image, title: lantern.title)
                             }
-                        } label: {
-                            LanternCard(
-                                imageName: lantern.image,
-                                title: lantern.title
-                            )
-                            .scaleEffect(
-                                selectedLantern == lantern.title ? 1.05 : 1.0
-                            )
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 28)
-                                    .strokeBorder(
-                                        .white.opacity(
-                                            selectedLantern == lantern.title ? 0.20 : 0
-                                        ),
-                                        lineWidth: 0.2
-                                    )
-                            }
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
                     }
+                    .padding(.horizontal, 25)
+                    
+                    Spacer()
+            
                 }
-                .padding(.horizontal, 25)
-                
-                Button(action: {
-                }) {
-                    Text("Tap a lantern to begin")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding(.vertical, 18)
-                        .frame(maxWidth: .infinity)
-                        
-                        .cornerRadius(20)
-                        .glassEffect(
-                            .clear
-                        )
-                }
-                .padding(.horizontal, 40)
-                .padding(.bottom, 30)
                 
             }
             
@@ -92,5 +64,5 @@ struct LanternView: View {
 }
 
 #Preview {
-   LanternView()
+    LanternView()
 }
