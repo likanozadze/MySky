@@ -25,20 +25,21 @@ struct LanternView: View {
                 .scaledToFill()
                 .ignoresSafeArea()
             
-            VStack(spacing: 30) {
+            VStack(spacing: 50) {
                 Text("What would you like to express today")
                     .font(.title2)
                     .fontWeight(.medium)
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.center)
-                    .padding(.top, 90)
+                    .frame(maxWidth: 320)
+                    .padding(.top, 24)
                 
                 LazyVGrid(
                     columns: [
                         GridItem(.flexible(), spacing: 20),
                         GridItem(.flexible(), spacing: 20)
                     ],
-                    spacing: 25
+                    spacing: 18
                 ){
                     ForEach(lanterns, id: \.title) { lantern in
                         Button {
@@ -68,7 +69,6 @@ struct LanternView: View {
                 }
                 .padding(.horizontal, 25)
                 
-                Spacer()
                 Button(action: {
                 }) {
                     Text("Tap a lantern to begin")
@@ -78,6 +78,9 @@ struct LanternView: View {
                         .frame(maxWidth: .infinity)
                         
                         .cornerRadius(20)
+                        .glassEffect(
+                            .clear
+                        )
                 }
                 .padding(.horizontal, 40)
                 .padding(.bottom, 30)
