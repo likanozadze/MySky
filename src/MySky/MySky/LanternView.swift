@@ -31,7 +31,7 @@ struct LanternView: View {
                     .fontWeight(.medium)
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.center)
-                    .padding(.top, 40)
+                    .padding(.top, 90)
                 
                 LazyVGrid(
                     columns: [
@@ -51,15 +51,15 @@ struct LanternView: View {
                                 title: lantern.title
                             )
                             .scaleEffect(
-                                selectedLantern == lantern.title ? 1.04 : 1.0
+                                selectedLantern == lantern.title ? 1.05 : 1.0
                             )
                             .overlay {
                                 RoundedRectangle(cornerRadius: 28)
-                                    .stroke(
-                                        selectedLantern == lantern.title
-                                        ? .white.opacity(0.65)
-                                        : .clear,
-                                        lineWidth: 1.5
+                                    .strokeBorder(
+                                        .white.opacity(
+                                            selectedLantern == lantern.title ? 0.20 : 0
+                                        ),
+                                        lineWidth: 0.2
                                     )
                             }
                         }

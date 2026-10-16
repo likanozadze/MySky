@@ -13,11 +13,12 @@ struct LanternCard: View {
     let title: String
     
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 14) {
             Image(imageName)
                 .resizable()
                 .scaledToFit()
                 .frame(height: 85)
+                .shadow(color: .white.opacity(0.15), radius: 12)
             
             Text(title)
             .font(.headline)
@@ -25,9 +26,14 @@ struct LanternCard: View {
             .foregroundColor(.white)
                                
         }
-        .padding(.vertical, 30)
+        .padding(.vertical, 24)
+        .padding(.horizontal, 12)
         .frame(maxWidth: .infinity)
-        .cornerRadius(28)
+        .glassEffect(
+            .clear,
+            in: RoundedRectangle(cornerRadius: 28)
+        )
+  
     }
 }
 
