@@ -106,7 +106,7 @@ struct OnboardingPage: View {
             
             // Title
             Text(title)
-                .font(.system(size: 22, weight: .semibold))
+                .font(.system(size: 30, weight: .semibold))
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: 260)
@@ -140,7 +140,7 @@ struct OnboardingPage: View {
             
             // Bottom text
             Text(text)
-                .font(.system(size: 15, weight: .semibold))
+                .font(.system(size: 19, weight: .semibold))
                 .foregroundStyle(.white.opacity(0.75))
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: 280)
