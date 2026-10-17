@@ -28,7 +28,9 @@ enum LanternSettings {
 }
 
 struct OnboardingView: View {
-    @State private var currentPage = 0
+    @State private var currentPage: Int? = 0 // which page is showing (optional because scrollPosition needs it)
+    
+    @State private var scrollOffset: CGFloat = 0 // how far we've swiped, passed to the sky
 
     // All the pages of our onboarding
     // if you want to add a page, you can just create a new array element here
@@ -46,24 +48,34 @@ struct OnboardingView: View {
 
     var body: some View {
         ZStack {
-            Image("AppBackground")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
+            SkyBackground(scrollOffset: scrollOffset)
 
-            // TabView is the container for the pages, calls OnboardingPage for each page
-            TabView(selection: $currentPage) {
-                ForEach(pages.indices, id: \.self) { index in
-                    OnboardingPage(
-                        title: pages[index].title,
-                        text: pages[index].body,
-                        onGetStarted: getStartedAction(for: index)
-                    )
-                    .tag(index)
+            // Horizontal paging ScrollView holds the pages, creating one OnboardingPage per page.
+            // We use it instead of a TabView because it tells us exactly how far we've swiped.
+            ScrollView(.horizontal) {
+                LazyHStack(spacing: 0) {
+                    ForEach(pages.indices, id: \.self) { index in
+                        OnboardingPage(
+                            title: pages[index].title,
+                            text: pages[index].body,
+                            onGetStarted: getStartedAction(for: index)
+                        )
+                        .containerRelativeFrame([.horizontal, .vertical]) // each page is one screen
+                        .id(index)
+                    }
                 }
+                .scrollTargetLayout()
             }
-            .tabViewStyle(.page(indexDisplayMode: .never))
+            .scrollTargetBehavior(.paging) // snaps to one page at a time
+            .scrollIndicators(.hidden)
+            .scrollPosition(id: $currentPage)
+            .onScrollGeometryChange(for: CGFloat.self) { geometry in
+                geometry.contentOffset.x
+            } action: { _, newOffset in
+                scrollOffset = newOffset
+            }
 
+            // This draws the circles at the bottom of the screen that count the pages
             VStack {
                 Spacer()
                 HStack(spacing: 8) {
@@ -152,14 +164,14 @@ struct OnboardingPage: View {
                     Button(action: onGetStarted) {
                         Text("Get Started")
                             .font(.headline)
-                            .foregroundColor(.white)
-                            .padding(.vertical, 18)
                             .frame(maxWidth: .infinity)
-                            .background(.ultraThinMaterial)
-                            .environment(\.colorScheme, .dark)
-                            .cornerRadius(20)
                     }
+                    .buttonStyle(.glassProminent) // native Liquid Glass button
+                    .controlSize(.large)
+                    .buttonBorderShape(.capsule)
+                    .tint(.orange) // warm glass to match the lantern glow
                     .padding(.horizontal, 16)
+                    
                 }
             }
             .frame(height: 56)
