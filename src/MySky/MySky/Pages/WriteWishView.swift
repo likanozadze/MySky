@@ -22,7 +22,13 @@ struct WriteWishView: View {
             VStack (spacing: 40) {
                 Spacer()
                 
-    
+                // Lika to use the new shared lantern element you can do like:
+                /*
+                 Lantern(type: selectedLanternType, width: 200)
+                 .goFloating()
+                */
+                // So instead of parametrizing "selectedLanternImage", you parametrize the lantern type
+                // and same thing in the LanternCard.swift
                 Image(selectedLanternImage)
                     .resizable()
                     .scaledToFit()

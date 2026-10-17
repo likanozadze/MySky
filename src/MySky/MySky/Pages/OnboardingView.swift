@@ -7,17 +7,6 @@
 
 import SwiftUI
 
-// We can change these values to quickly test how the lantern looks
-// (how it floats is in FloatingModifier.swift)
-enum LanternSettings {
-
-    // Size and glow
-    static let width: CGFloat = 130
-    static let glowColor: Color = .orange
-    static let glowOpacity: Double = 1.0
-    static let glowRadius: CGFloat = 60
-}
-
 // We can change these values to test how the page elements appear when we swipe
 enum PageAnimationSettings {
     
@@ -144,15 +133,8 @@ struct OnboardingPage: View {
 
             Spacer()
 
-            // Lantern with its glow, floating (see FloatingModifier.swift)
-            Image("YellowLanternBig")
-                .resizable()
-                .scaledToFit()
-                .frame(width: LanternSettings.width)
-                .shadow(
-                    color: LanternSettings.glowColor.opacity(LanternSettings.glowOpacity),
-                    radius: LanternSettings.glowRadius
-                )
+            // Our shared lantern (Elements/Lantern.swift)
+            Lantern(type: .lanternYellow)
                 .goFloating()
                 // Lantern fades in and rises from below
                 .opacity(isActive ? 1 : 0)
