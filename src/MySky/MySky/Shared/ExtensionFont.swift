@@ -13,8 +13,6 @@ extension Font {
         size: 28,
         weight: .bold,
         design: .rounded
-        
-    
     )
 
     static let mySkyBody = Font.system(
