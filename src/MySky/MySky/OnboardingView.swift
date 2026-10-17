@@ -27,10 +27,35 @@ enum LanternSettings {
     static let tiltSpeed: Double = 1.4
 }
 
+// We can change these values to test how the page elements appear when we swipe
+enum PageAnimationSettings {
+    
+    // Turn the whole appear animation on or off
+    static let isEnabled = true
+
+    // Text and button
+    static let duration: Double = 0.6        // how long the fade takes (seconds)
+    static let rise: CGFloat = 12            // how far they slide up
+
+    // Lantern
+    static let lanternDuration: Double = 0.9 // how long the lantern takes to appear (seconds)
+    static let lanternRise: CGFloat = 40     // how far below it starts
+    static let lanternScale: CGFloat = 0.85  // how small it starts (1 = full size)
+
+    // When each element starts, so they appear one after the other
+    static let lanternDelay: Double = 0.1
+    static let bodyDelay: Double = 0.2
+    static let buttonDelay: Double = 0.35
+}
+
 struct OnboardingView: View {
     @State private var currentPage: Int? = 0 // which page is showing (optional because scrollPosition needs it)
     
     @State private var scrollOffset: CGFloat = 0 // how far we've swiped, passed to the sky
+    @State private var hasAppeared = false // becomes true when the screen shows, so the first page animates in too
+
+    // If the user has reduceMotion ON, the pages don't animate in at all
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     // All the pages of our onboarding
     // if you want to add a page, you can just create a new array element here
@@ -58,6 +83,8 @@ struct OnboardingView: View {
                         OnboardingPage(
                             title: pages[index].title,
                             text: pages[index].body,
+                            // When the animation is off (or reduceMotion is ON), every page is always "active", so everything is just visible and nothing animates
+                            isActive: !PageAnimationSettings.isEnabled || reduceMotion || (hasAppeared && index == currentPage),
                             onGetStarted: getStartedAction(for: index)
                         )
                         .containerRelativeFrame([.horizontal, .vertical]) // each page is one screen
@@ -74,6 +101,7 @@ struct OnboardingView: View {
             } action: { _, newOffset in
                 scrollOffset = newOffset
             }
+            .onAppear { hasAppeared = true }
 
             // This draws the circles at the bottom of the screen that count the pages
             VStack {
@@ -108,6 +136,7 @@ struct OnboardingPage: View {
     // "parameters"
     let title: String
     let text: String
+    let isActive: Bool // true when this page is the one on screen, used to animate its elements in
     var onGetStarted: (() -> Void)? = nil // optional parameter, it's nil on everypage but the last one.
 
     // If the user has reduceMotion ON, the lantern will not move
@@ -122,6 +151,7 @@ struct OnboardingPage: View {
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: 260)
+                .appearAnimation(isActive: isActive, delay: 0)
                 .padding(.top, 50)
 
             Spacer()
@@ -147,6 +177,15 @@ struct OnboardingPage: View {
                     // Rotation effect to tilt it
                     .rotationEffect(.degrees(sin(time * LanternSettings.tiltSpeed) * LanternSettings.tilt * motion))
             }
+            // Lantern fades in and rises from below
+            .opacity(isActive ? 1 : 0)
+            .scaleEffect(isActive ? 1 : PageAnimationSettings.lanternScale)
+            .offset(y: isActive ? 0 : PageAnimationSettings.lanternRise)
+            .animation(
+                .easeOut(duration: PageAnimationSettings.lanternDuration)
+                    .delay(isActive ? PageAnimationSettings.lanternDelay : 0),
+                value: isActive
+            )
 
             Spacer()
             
@@ -156,6 +195,7 @@ struct OnboardingPage: View {
                 .foregroundStyle(.white.opacity(0.75))
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: 280)
+                .appearAnimation(isActive: isActive, delay: PageAnimationSettings.bodyDelay)
                 .frame(height: 100, alignment: .top)
 
             // Fixed-height ZStack keeps the layout identical on every page
@@ -171,13 +211,28 @@ struct OnboardingPage: View {
                     .buttonBorderShape(.capsule)
                     .tint(.orange) // warm glass to match the lantern glow
                     .padding(.horizontal, 16)
-                    
+                    .appearAnimation(isActive: isActive, delay: PageAnimationSettings.buttonDelay)
                 }
             }
             .frame(height: 56)
             .padding(.bottom, 60)
         }
         .padding(.horizontal, 24)
+    }
+}
+
+// Fade in and slide up when the page comes on screen, fade out when it leaves.
+// Written once here so the title, text and button all animate the same way.
+extension View {
+    func appearAnimation(isActive: Bool, delay: Double) -> some View {
+        self
+            .opacity(isActive ? 1 : 0)
+            .offset(y: isActive ? 0 : PageAnimationSettings.rise)
+            .animation(
+                .easeOut(duration: PageAnimationSettings.duration)
+                    .delay(isActive ? delay : 0), // only wait when appearing, leave all together
+                value: isActive
+            )
     }
 }
 
