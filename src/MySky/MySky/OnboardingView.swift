@@ -7,24 +7,15 @@
 
 import SwiftUI
 
-// We can change these values to quickly test how the lantern looks and moves
+// We can change these values to quickly test how the lantern looks
+// (how it floats is in FloatingModifier.swift)
 enum LanternSettings {
-    
+
     // Size and glow
     static let width: CGFloat = 130
     static let glowColor: Color = .orange
     static let glowOpacity: Double = 1.0
     static let glowRadius: CGFloat = 60
-
-    // How far it moves
-    static let floatX: Double = 6
-    static let floatY: Double = 10
-    static let tilt: Double = 2
-
-    // How fast it moves
-    static let speedX: Double = 1.7
-    static let speedY: Double = 1.5
-    static let tiltSpeed: Double = 1.4
 }
 
 // We can change these values to test how the page elements appear when we swipe
@@ -139,9 +130,6 @@ struct OnboardingPage: View {
     let isActive: Bool // true when this page is the one on screen, used to animate its elements in
     var onGetStarted: (() -> Void)? = nil // optional parameter, it's nil on everypage but the last one.
 
-    // If the user has reduceMotion ON, the lantern will not move
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
     var body: some View {
         VStack(spacing: 0) {
             
@@ -156,36 +144,25 @@ struct OnboardingPage: View {
 
             Spacer()
 
-            // TimelineView to draw and animate the lantern.
-            TimelineView(.animation) { context in
-                let time = context.date.timeIntervalSinceReferenceDate
-                let motion: Double = reduceMotion ? 0 : 1
-
-                Image("YellowLanternBig")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: LanternSettings.width)
-                    .shadow(
-                        color: LanternSettings.glowColor.opacity(LanternSettings.glowOpacity),
-                        radius: LanternSettings.glowRadius
-                    )
-                    // Offset to move it
-                    .offset(
-                        x: sin(time * LanternSettings.speedX) * LanternSettings.floatX * motion,
-                        y: cos(time * LanternSettings.speedY) * LanternSettings.floatY * motion
-                    )
-                    // Rotation effect to tilt it
-                    .rotationEffect(.degrees(sin(time * LanternSettings.tiltSpeed) * LanternSettings.tilt * motion))
-            }
-            // Lantern fades in and rises from below
-            .opacity(isActive ? 1 : 0)
-            .scaleEffect(isActive ? 1 : PageAnimationSettings.lanternScale)
-            .offset(y: isActive ? 0 : PageAnimationSettings.lanternRise)
-            .animation(
-                .easeOut(duration: PageAnimationSettings.lanternDuration)
-                    .delay(isActive ? PageAnimationSettings.lanternDelay : 0),
-                value: isActive
-            )
+            // Lantern with its glow, floating (see FloatingModifier.swift)
+            Image("YellowLanternBig")
+                .resizable()
+                .scaledToFit()
+                .frame(width: LanternSettings.width)
+                .shadow(
+                    color: LanternSettings.glowColor.opacity(LanternSettings.glowOpacity),
+                    radius: LanternSettings.glowRadius
+                )
+                .goFloating()
+                // Lantern fades in and rises from below
+                .opacity(isActive ? 1 : 0)
+                .scaleEffect(isActive ? 1 : PageAnimationSettings.lanternScale)
+                .offset(y: isActive ? 0 : PageAnimationSettings.lanternRise)
+                .animation(
+                    .easeOut(duration: PageAnimationSettings.lanternDuration)
+                        .delay(isActive ? PageAnimationSettings.lanternDelay : 0),
+                    value: isActive
+                )
 
             Spacer()
             
