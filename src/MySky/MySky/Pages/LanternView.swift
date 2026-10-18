@@ -11,11 +11,11 @@ import SwiftUI
 struct LanternView: View {
     @State private var selectedLantern: String?
     
-    private let lanterns: [(image: String, title: String)] = [
-        ("RedLantern", "Health"),
-        ("YellowLantern", "Success"),
-        ("BlueLantern", "Clarity"),
-        ("PinkLantern", "Love")
+    private let lanterns: [(type: LanternType, title: String)] = [
+        (.lanternRed, "Health"),
+        (.lanternYellow, "Success"),
+        (.lanternBlue, "Clarity"),
+        (.lanternPink, "Love")
     ]
     var body: some View {
         NavigationStack {
@@ -45,8 +45,8 @@ struct LanternView: View {
                     ){
                         ForEach(lanterns, id: \.title) { lantern in
                             
-                            NavigationLink(destination: WriteWishView(selectedLanternImage: lantern.image)) {
-                                LanternCard (imageName: lantern.image, title: lantern.title)
+                            NavigationLink(destination: WriteWishView(selectedLanternType: lantern.type)) {
+                                LanternCard (type: lantern.type, title: lantern.title)
                             }
                             .buttonStyle(.plain)
                         }

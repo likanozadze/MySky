@@ -10,12 +10,12 @@ import SwiftUI
 
 struct LanternCard: View {
 
-    let imageName: String
+    let type: LanternType
     let title: String
 
     var body: some View {
         VStack(spacing: 12) {
-            Image(imageName)
+            Image(type.imageName)
                 .resizable()
                 .scaledToFit()
                 .frame(height: 82)
@@ -46,7 +46,7 @@ struct LanternCard: View {
             .ignoresSafeArea()
 
         LanternCard(
-            imageName: "RedLantern",
+            type: .lanternRed,
             title: "Health"
         )
         .padding(40)

@@ -8,31 +8,18 @@
 import SwiftUI
 
 struct WriteWishView: View {
-    let selectedLanternImage: String
+    let selectedLanternType: LanternType
     
     @State private var wishText: String = ""
     
     var body: some View {
         ZStack {
-            Image("AppBackground2")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
+         SkyBackground()
             
             VStack (spacing: 40) {
                 Spacer()
-                
-                // Lika to use the new shared lantern element you can do like:
-                /*
-                 Lantern(type: selectedLanternType, width: 200)
-                 .goFloating()
-                */
-                // So instead of parametrizing "selectedLanternImage", you parametrize the lantern type
-                // and same thing in the LanternCard.swift
-                Image(selectedLanternImage)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 280)
+
+               Lantern(type: selectedLanternType, width: 200)
             
                     .overlay(
                         Text(wishText)
@@ -88,5 +75,5 @@ struct WriteWishView: View {
 }
 
 #Preview {
-    WriteWishView(selectedLanternImage: "YellowLantern")
+    WriteWishView(selectedLanternType: .lanternYellow)
 }
