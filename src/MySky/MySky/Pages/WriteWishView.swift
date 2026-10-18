@@ -13,7 +13,7 @@ struct WriteWishView: View {
     @State private var wishText: String = ""
     @State private var isReleasing: Bool = false
     @FocusState private var isTextFieldFocused: Bool
-    
+    @State private var isMatchboxOpened: Bool = false
     
     var body: some View {
         ZStack {
@@ -49,6 +49,7 @@ struct WriteWishView: View {
                     .multilineTextAlignment(.center)
                     .font(.system(size: 16))
                     .lineLimit(1...5)
+                    .focused($isTextFieldFocused)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 16)
                     .glassEffect(
@@ -84,11 +85,19 @@ struct WriteWishView: View {
                             )
                     }
                     .padding(.bottom, 40)
+                } else{
+                    MatchboxView(isOpened: $isMatchboxOpened)
+                        .padding(.bottom, 40)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
             .padding(.vertical, 20)
         }
+        .onTapGesture {
+                    isTextFieldFocused = false
+                }
     }
+
 }
 
 

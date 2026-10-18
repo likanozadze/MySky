@@ -55,12 +55,13 @@ struct Lantern: View {
     let type: LanternType
 
     // Optional, if we don't pass them the ones from LanternSettings are used
+    var isLit: Bool = false // 0 = dimmed (no fire), 1 = lit (fire + glow)
     var width: CGFloat = LanternSettings.width
     var glowOpacity: Double = LanternSettings.glowOpacity // 0 = no glow, 1 = full glow
     var glowRadius: CGFloat = LanternSettings.glowRadius  // how far the glow spreads
 
     var body: some View {
-        Image(type.imageName)
+        Image(isLit ? type.imageName : "\(type.imageName)Dimmed")
             .resizable()
             .scaledToFit()
             .frame(width: width)
@@ -69,6 +70,7 @@ struct Lantern: View {
                 color: type.glowColor.opacity(glowOpacity),
                 radius: glowRadius
             )
+            .animation(.easeInOut(duration: 0.5), value: isLit)
     }
 }
 
