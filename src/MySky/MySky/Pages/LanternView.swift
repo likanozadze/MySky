@@ -25,13 +25,12 @@ struct LanternView: View {
                 VStack(spacing: 40) {
                     Spacer()
                     
-                    Text("What would you like to express today?")
-                        .font(.title2)
-                        .fontWeight(.medium)
-                        .foregroundStyle(.white)
+                    Text("What do you want to\n wish for?")
+                        .font(.system(size: 20, weight: .medium, design: .rounded))
+                        .foregroundStyle(.white.opacity(0.9))
                         .multilineTextAlignment(.center)
-                        .frame(maxWidth: 320)
-                   
+                       
+                    
                     GlassEffectContainer(spacing: 20) {
                         LazyVGrid(
                             columns: [
@@ -52,7 +51,7 @@ struct LanternView: View {
                     .padding(.horizontal, 25)
                     
                     Spacer()
-            
+                    
                 }
                 
             }

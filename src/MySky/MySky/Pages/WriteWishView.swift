@@ -14,17 +14,17 @@ struct WriteWishView: View {
     
     var body: some View {
         ZStack {
-         SkyBackground()
+            SkyBackground()
             
-            VStack (spacing: 40) {
+            VStack (spacing: 24) {
                 Spacer()
-
-               Lantern(type: selectedLanternType, width: 200)
-            
+                
+                Lantern(type: selectedLanternType, width: 200)
                     .overlay(
                         Text(wishText)
-                            .font(.system(size: 18, weight: .medium, design: .rounded))
-                            .foregroundColor(.black.opacity(0.7))
+                            .font(.system(size: 17, weight: .regular, design: .serif))
+                            .italic()
+                            .foregroundColor(wishText.isEmpty ? .black.opacity(0.3) : .black.opacity(0.75))
                             .multilineTextAlignment(.center)
                             .minimumScaleFactor(0.6)
                             .padding(.horizontal, 40)
@@ -32,30 +32,34 @@ struct WriteWishView: View {
                     )
                     .padding(.bottom, 40)
                 
-                
-                VStack(spacing: 8) {
-                    TextField("", text: $wishText, prompt:
-                        Text("Share your feelings here")
-                            .foregroundColor(.white.opacity(0.5))
-                    , axis: .vertical)
-                    .foregroundColor(.white)
-                    .tint(.white)
-                    .multilineTextAlignment(.center)
-                    .font(.system(size: 16))
-                    .lineLimit(1...5)
-                
-                    Rectangle()
-                        .fill(Color.white.opacity(0.3))
-                        .frame(height: 1)
-                }
-                .padding(.horizontal, 60)
                 Spacer()
                 
-            
-                Button(action: {
+                TextField("", text: $wishText, prompt:
+                            Text("Share your feelings here")
+                    .foregroundColor(.white.opacity(0.5))
+                          , axis: .vertical)
+                .foregroundColor(.white)
+                .tint(.white)
+                .multilineTextAlignment(.center)
+                .font(.system(size: 16))
+                .lineLimit(1...5)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 16)
+                .glassEffect(
+                    .regular,
+                    in: RoundedRectangle(cornerRadius: 22)
+                )
+                .overlay(RoundedRectangle(cornerRadius: 22)
+                    .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                         
+                )
+                . padding(.horizontal, 36)
+                Spacer()
                 
+                Button(action: {
+                    
                 }) {
-                    Text("Submit")
+                    Text("Release")
                         .font(.system(size: 16, weight: .medium))
                         .foregroundColor(.white)
                         .padding(.horizontal, 32)
@@ -68,11 +72,13 @@ struct WriteWishView: View {
                             Capsule().stroke(Color.white.opacity(0.2), lineWidth: 1)
                         )
                 }
-                .padding(.bottom, 60)
+                .padding(.bottom, 40)
             }
+            .padding(.vertical, 20)
         }
     }
 }
+
 
 #Preview {
     WriteWishView(selectedLanternType: .lanternYellow)
