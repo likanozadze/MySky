@@ -20,10 +20,7 @@ struct LanternView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Image("AppBackground")
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
+                SkyBackground()
                 
                 VStack(spacing: 40) {
                     Spacer()
@@ -35,20 +32,21 @@ struct LanternView: View {
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: 320)
                    
-                    
-                    LazyVGrid(
-                        columns: [
-                            GridItem(.flexible(), spacing: 20),
-                            GridItem(.flexible(), spacing: 20)
-                        ],
-                        spacing: 18
-                    ){
-                        ForEach(lanterns, id: \.title) { lantern in
-                            
-                            NavigationLink(destination: WriteWishView(selectedLanternType: lantern.type)) {
-                                LanternCard (type: lantern.type, title: lantern.title)
+                    GlassEffectContainer(spacing: 20) {
+                        LazyVGrid(
+                            columns: [
+                                GridItem(.flexible(), spacing: 20),
+                                GridItem(.flexible(), spacing: 20)
+                            ],
+                            spacing: 18
+                        ){
+                            ForEach(lanterns, id: \.title) { lantern in
+                                
+                                NavigationLink(destination: WriteWishView(selectedLanternType: lantern.type)) {
+                                    LanternCard (type: lantern.type, title: lantern.title)
+                                }
+                                .buttonStyle(.plain)
                             }
-                            .buttonStyle(.plain)
                         }
                     }
                     .padding(.horizontal, 25)

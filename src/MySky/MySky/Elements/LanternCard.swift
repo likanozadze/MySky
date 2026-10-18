@@ -36,10 +36,30 @@ struct LanternCard: View {
         .padding(.horizontal, 10)
         .padding(.vertical, 22)
         .frame(maxWidth: .infinity)
+        .background(RoundedRectangle(cornerRadius: 28)
+            .fill(.white.opacity(0.1))
+            .background(
+                RoundedRectangle(cornerRadius: 28)
+                    .blur(radius: 10)
+            )
+            
+        )
         .glassEffect(
             .regular,
             in: RoundedRectangle(cornerRadius: 28)
         )
+        .overlay(
+                    RoundedRectangle(cornerRadius: 28)
+                        .stroke(
+                            LinearGradient(
+                                colors: [.white.opacity(0.5), .white.opacity(0.1), .clear],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: 1.2
+                        )
+                )
+        .shadow(color: .black.opacity(0.25), radius: 15, x: 0, y: 8)
     }
 }
 
