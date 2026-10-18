@@ -15,10 +15,15 @@ struct LanternCard: View {
 
     var body: some View {
         VStack(spacing: 12) {
-            Image(type.imageName)
-                .resizable()
-                .scaledToFit()
-                .frame(height: 82)
+            Lantern(type: type, width: 82, glowOpacity: 0.5, glowRadius: 30)
+                .goFloating(
+                    floatX: 4,
+                    floatY: 15,
+                    tilt: 5,
+                    speedX: 1.0,
+                    speedY: 1.2,
+                    tiltSpeed: 1.0
+                )
 
             Text(title)
                 .font(.system(
