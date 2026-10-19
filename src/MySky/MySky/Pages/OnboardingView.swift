@@ -29,6 +29,7 @@ enum PageAnimationSettings {
 }
 
 struct OnboardingView: View {
+    @AppStorage("hasSeenOnboarding") var hasSeenOnBoarding: Bool = false
     @State private var currentPage: Int? = 0 // which page is showing (optional because scrollPosition needs it)
     
     @State private var scrollOffset: CGFloat = 0 // how far we've swiped, passed to the sky
@@ -107,6 +108,10 @@ struct OnboardingView: View {
 
     private func getStarted() {
         // TODO: change view and make sure onboarding doesnt happen again
+        
+        withAnimation {
+            hasSeenOnBoarding = true
+        }
     }
 }
 

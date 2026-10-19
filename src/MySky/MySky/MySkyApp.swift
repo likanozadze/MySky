@@ -11,7 +11,7 @@ import SwiftUI
 struct MySkyApp: App {
     var body: some Scene {
         WindowGroup {
-            LanternView()
+            ContentView()
         }
     }
 }

@@ -8,10 +8,39 @@
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage("hasSeenOnboarding") var hasSeenOnBoarding: Bool = false
+    
     var body: some View {
-        OnboardingView()
+        if hasSeenOnBoarding {
+            MainTabView()
+        } else {
+            OnboardingView()
+        }
     }
 }
+
+struct MainTabView: View {
+    init() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithDefaultBackground()
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
+    }
+    
+    var body: some View {
+        TabView {
+            LanternView()
+                .tabItem {
+                    Label("Home", systemImage: "house")
+                }
+            Text("My Lanterns").tabItem { Label("Lanterns", systemImage: "lightbulb.fill")}
+            Text("Profile").tabItem { Label("Profile", systemImage: "person")}
+            
+            
+        }
+        .tint(.orange)
+    }
+    }
 
 #Preview {
     ContentView()
