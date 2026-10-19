@@ -71,7 +71,7 @@ struct WriteWishView: View {
                             isReleasing = true
                         }
                     }) {
-                        Text("Release")
+                        Text("light it up")
                             .font(.system(size: 16, weight: .medium))
                             .foregroundColor(.white)
                             .padding(.horizontal, 32)
