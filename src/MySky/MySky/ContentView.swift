@@ -33,12 +33,13 @@ struct MainTabView: View {
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
-            Text("My Lanterns").tabItem { Label("Lanterns", systemImage: "lightbulb.fill")}
+         MyLanternsView()
+                .tabItem { Label("Lanterns", systemImage: "lightbulb.fill") }
             Text("Profile").tabItem { Label("Profile", systemImage: "person")}
             
             
         }
-        .tint(.orange)
+        .tint(.white)
     }
     }
 

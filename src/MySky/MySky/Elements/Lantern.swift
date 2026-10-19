@@ -25,7 +25,7 @@
 import SwiftUI
 
 // The 4 lantern types, each one with its image and matching glow color
-enum LanternType: CaseIterable {
+enum LanternType: String, CaseIterable, Codable {
     case lanternYellow, lanternRed, lanternBlue, lanternPink
 
     var imageName: String {
