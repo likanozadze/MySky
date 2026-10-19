@@ -40,15 +40,18 @@ struct OnboardingView: View {
 
     // All the pages of our onboarding
     // if you want to add a page, you can just create a new array element here
-    private let pages: [(title: String, body: String)] = [
+    private let pages: [(title: String, body: String, lantern: LanternType)] = [
         ("Welcome to your quiet space",
-         "A place to pause, process, and release what you've been holding onto."),
-        
+         "A place to pause, process, and release what you've been holding onto.",
+         .lanternRed),
+
         ("Relearn the art of letting go",
-         "For centuries, sky lanterns have been used to carry heavy burdens and quiet wishes into the night. We've brought this ancient release ritual to you"),
-        
+         "For centuries, sky lanterns have been used to carry heavy burdens and quiet wishes into the night. We've brought this ancient release ritual to you",
+         .lanternPink),
+
         ("A tactile release, in three steps",
-         "Write what you feel, strike a match to ignite your intention and watch it gently float away."),
+         "Write what you feel, strike a match to ignite your intention and watch it gently float away.",
+         .lanternYellow),
         
     ]
 
@@ -64,6 +67,7 @@ struct OnboardingView: View {
                         OnboardingPage(
                             title: pages[index].title,
                             text: pages[index].body,
+                            lantern: pages[index].lantern,
                             // When the animation is off (or reduceMotion is ON), every page is always "active", so everything is just visible and nothing animates
                             isActive: !PageAnimationSettings.isEnabled || reduceMotion || (hasAppeared && index == currentPage),
                             onGetStarted: getStartedAction(for: index)
@@ -121,6 +125,7 @@ struct OnboardingPage: View {
     // "parameters"
     let title: String
     let text: String
+    let lantern: LanternType // which lantern this page shows
     let isActive: Bool // true when this page is the one on screen, used to animate its elements in
     var onGetStarted: (() -> Void)? = nil // optional parameter, it's nil on everypage but the last one.
 
@@ -139,7 +144,7 @@ struct OnboardingPage: View {
             Spacer()
 
             // Our shared lantern (Elements/Lantern.swift)
-            Lantern(type: .lanternYellow)
+            Lantern(type: lantern)
                 .goFloating()
                 // Lantern fades in and rises from below
                 .opacity(isActive ? 1 : 0)

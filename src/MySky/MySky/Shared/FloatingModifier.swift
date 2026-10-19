@@ -21,6 +21,11 @@
 //  tiltSpeed: 0.5
 // )
 //
+// To start floating only at some point, pass intensity (0 = still, 1 = full floating) and animate it:
+// Image(...)
+// .goFloating(intensity: isFloating ? 1 : 0)
+// .animation(.easeInOut(duration: 1.5), value: isFloating)
+//
 // TODO: we can have a phase just like the Sky so multiple views do not animate in sync and look all the same
 // ------------------------------------------------------------------------------------
 
@@ -49,7 +54,8 @@ extension View {
         tilt: Double = FloatingSettings.tilt,
         speedX: Double = FloatingSettings.speedX,
         speedY: Double = FloatingSettings.speedY,
-        tiltSpeed: Double = FloatingSettings.tiltSpeed
+        tiltSpeed: Double = FloatingSettings.tiltSpeed,
+        intensity: Double = 1
     ) -> some View {
         modifier(FloatingModifier(
             floatX: floatX,
@@ -57,12 +63,14 @@ extension View {
             tilt: tilt,
             speedX: speedX,
             speedY: speedY,
-            tiltSpeed: tiltSpeed
+            tiltSpeed: tiltSpeed,
+            intensity: intensity
         ))
     }
 }
 
-struct FloatingModifier: ViewModifier {
+// Animatable so that when intensity changes inside an animation, it goes there smoothly (no jump)
+struct FloatingModifier: ViewModifier, Animatable {
     // How far it moves (points / degrees)
     let floatX: Double
     let floatY: Double
@@ -73,6 +81,14 @@ struct FloatingModifier: ViewModifier {
     let speedY: Double
     let tiltSpeed: Double
 
+    // 0 = still, 1 = full floating
+    var intensity: Double
+
+    var animatableData: Double {
+        get { intensity }
+        set { intensity = newValue }
+    }
+
     // If the user has reduceMotion ON, the view will not move
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -81,7 +97,7 @@ struct FloatingModifier: ViewModifier {
         // TimelineView redraws every frame, so the movement is smooth
         TimelineView(.animation) { context in
             let time = context.date.timeIntervalSinceReferenceDate
-            let motion: Double = reduceMotion ? 0 : 1
+            let motion: Double = reduceMotion ? 0 : intensity
 
             content
                 // Offset to move it
