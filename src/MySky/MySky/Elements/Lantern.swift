@@ -11,6 +11,9 @@
 //
 // Lantern(type: .lanternYellow)
 //
+// It is lit (fire + glow) by default. For a dimmed lantern (no fire, no glow) do:
+// Lantern(type: .lanternYellow, isDimmed: true)
+//
 // OR if you want a different size or a softer glow, you can specify the parameters in the parenthesis:
 // Lantern(type: .lanternRed, width: 80, glowOpacity: 0.5, glowRadius: 30)
 //
@@ -55,22 +58,22 @@ struct Lantern: View {
     let type: LanternType
 
     // Optional, if we don't pass them the ones from LanternSettings are used
-    var isLit: Bool = false // 0 = dimmed (no fire), 1 = lit (fire + glow)
+    var isDimmed: Bool = false // true = no fire and no glow, false = lit (fire + glow)
     var width: CGFloat = LanternSettings.width
     var glowOpacity: Double = LanternSettings.glowOpacity // 0 = no glow, 1 = full glow
     var glowRadius: CGFloat = LanternSettings.glowRadius  // how far the glow spreads
 
     var body: some View {
-        Image(isLit ? type.imageName : "\(type.imageName)Dimmed")
+        Image(isDimmed ? "\(type.imageName)Dimmed" : type.imageName)
             .resizable()
             .scaledToFit()
             .frame(width: width)
-            // Glow around the lantern, in the lantern's own color
+            // Glow around the lantern, in the lantern's own color (only when lit)
             .shadow(
-                color: type.glowColor.opacity(glowOpacity),
+                color: type.glowColor.opacity(isDimmed ? 0 : glowOpacity),
                 radius: glowRadius
             )
-            .animation(.easeInOut(duration: 0.5), value: isLit)
+            .animation(.easeInOut(duration: 0.5), value: isDimmed)
     }
 }
 
@@ -81,7 +84,7 @@ struct Lantern: View {
 
         LazyVGrid(columns: [GridItem(), GridItem()], spacing: 60) {
             ForEach(LanternType.allCases, id: \.self) { type in
-                Lantern(type: type, width: 80)
+                Lantern(type: type, isDimmed: false, width: 80)
                     .goFloating()
             }
         }

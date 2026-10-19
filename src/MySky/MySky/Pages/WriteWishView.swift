@@ -22,7 +22,7 @@ struct WriteWishView: View {
             VStack (spacing: 24) {
                 Spacer()
                 
-                Lantern(type: selectedLanternType, width: 200)
+                Lantern(type: selectedLanternType, isDimmed: true, width: 200)
                     .overlay(
                         Text(wishText)
                             .font(.system(size: 17, weight: .regular, design: .serif))

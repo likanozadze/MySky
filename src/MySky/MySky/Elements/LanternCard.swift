@@ -15,11 +15,11 @@ struct LanternCard: View {
 
     var body: some View {
         VStack(spacing: 12) {
-            Lantern(type: type, isLit: true, width: 82, glowOpacity: 0.5, glowRadius: 30)
+            Lantern(type: type, width: 82, glowOpacity: 0.5, glowRadius: 30)
                 .goFloating(
-                    floatX: 4,
-                    floatY: 15,
-                    tilt: 5,
+                    floatX: 2,
+                    floatY: 6,
+                    tilt: 2,
                     speedX: 1.0,
                     speedY: 1.2,
                     tiltSpeed: 1.0

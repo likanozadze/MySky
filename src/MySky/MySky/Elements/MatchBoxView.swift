@@ -9,7 +9,10 @@ import SwiftUI
 
 struct MatchboxView: View {
     @Binding var isOpened: Bool
-    
+    var width: CGFloat = 140
+    // Optional, what happens when we tap the matchbox once it's already open
+    var onTapWhenOpened: () -> Void = {}
+
     var body: some View {
         ZStack {
             Image("Matchbox")
@@ -22,10 +25,13 @@ struct MatchboxView: View {
                 .scaledToFit()
                 .opacity(isOpened ? 1 : 0)
         }
-        .frame(width: 140)
+        .frame(width: width)
         .scaleEffect(isOpened ? 1.1 : 1.0)
         .onTapGesture {
-            guard !isOpened else { return }
+            guard !isOpened else {
+                onTapWhenOpened()
+                return
+            }
             withAnimation(.easeInOut(duration: 0.5)) {
                 isOpened = true
             }
