@@ -21,6 +21,7 @@ struct LanternView: View {
         NavigationStack {
             ZStack {
                 SkyBackground()
+                    .ignoresSafeArea()
                 
                 VStack(spacing: 40) {
                     Spacer()

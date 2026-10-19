@@ -18,7 +18,7 @@ struct WriteWishView: View {
     var body: some View {
         ZStack {
             SkyBackground()
-            
+                .ignoresSafeArea()
             VStack (spacing: 24) {
                 Spacer()
                 
