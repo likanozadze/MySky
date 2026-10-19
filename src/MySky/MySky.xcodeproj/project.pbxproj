@@ -6,6 +6,10 @@
 	objectVersion = 110;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9803E30130865513000BC51D /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 9803E30030865513000BC51D /* Lottie */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		9884A50A3082227900347B61 /* MySky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MySky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -22,6 +26,7 @@
 		9884A5073082227900347B61 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				9803E30130865513000BC51D /* Lottie in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -60,6 +65,9 @@
 				9884A50C3082227900347B61 /* MySky */,
 			);
 			name = MySky;
+			packageProductDependencies = (
+				9803E30030865513000BC51D /* Lottie */,
+			);
 			productName = MySky;
 			productReference = 9884A50A3082227900347B61 /* MySky.app */;
 			productType = "com.apple.product-type.application";
@@ -88,6 +96,9 @@
 			);
 			mainGroup = 9884A5013082227900347B61;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9803E2FF30865513000BC51D /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9884A50B3082227900347B61 /* Products */;
 			projectDirPath = "";
@@ -324,6 +335,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9803E2FF30865513000BC51D /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.6.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9803E30030865513000BC51D /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9803E2FF30865513000BC51D /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9884A5023082227900347B61 /* Project object */;
 	validationLevel = 1;

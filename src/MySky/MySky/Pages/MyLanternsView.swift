@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 
+
 struct MyLanternsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \ReleasedLantern.releasedAt, order: .reverse)
@@ -26,7 +27,7 @@ struct MyLanternsView: View {
                             glowOpacity: 0.6,
                             glowRadius: 20)
                         .goFloating()
-                        .onTapGesture { selectedLantern = lantern }   // before .position
+                        .onTapGesture { selectedLantern = lantern }
                         .position(x: lantern.x * geo.size.width,
                                   y: lantern.y * geo.size.height)
                 }

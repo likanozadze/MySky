@@ -20,6 +20,7 @@
 // ------------------------------------------------------------------------------------
 
 import SwiftUI
+import SwiftData
 
 // Where the lantern is and how big, at each step
 struct LanternPlacement {
@@ -148,7 +149,10 @@ private enum ImageSize {
 
 struct WriteWishView: View {
     let selectedLanternType: LanternType
-
+    
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var step: WishStep = .writing
     @State private var wishText: String = ""
     @FocusState private var isTextFieldFocused: Bool
@@ -238,6 +242,8 @@ struct WriteWishView: View {
             }
 
             letGoHint
+            
+            closingLine
 
             if isLanternLit && isLanternFlying == false {
                 swipeUpLayer
@@ -250,6 +256,7 @@ struct WriteWishView: View {
         .onTapGesture {
             isTextFieldFocused = false
         }
+        .toolbar(.hidden, for: .tabBar)
         .sensoryFeedback(.impact(weight: .medium), trigger: isMatchLit)
         .sensoryFeedback(.success, trigger: isLanternLit)
         .sensoryFeedback(.impact(weight: .light), trigger: isLanternFlying)
@@ -320,7 +327,7 @@ struct WriteWishView: View {
                 .frame(minHeight: 24, maxHeight: WriteWishSettings.textFieldToButtonSpacing)
 
             Button(action: release) {
-                Text("Release")
+                Text("Light it up")
                     .font(.system(size: 16, weight: .medium))
                     .foregroundColor(.white)
                     .padding(.horizontal, 32)
@@ -631,7 +638,20 @@ struct WriteWishView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .ignoresSafeArea(.keyboard)
     }
-
+    
+    private var closingLine: some View {
+        Text("Your wish is on its way")
+            .hintStyle()
+            .offset(y: WriteWishSettings.lanternHintY)
+            .opacity(isLanternFlying ? 1 : 0)
+            .animation(
+                .easeInOut(duration: 1.0).delay(isLanternFlying ? 1.0 : 0),
+                value: isLanternFlying
+            )
+            .allowsHitTesting(false)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .ignoresSafeArea(.keyboard)
+    }
     // Swipe up anywhere on the screen to let the lantern go
     private var swipeUpLayer: some View {
         Color.clear
@@ -649,15 +669,20 @@ struct WriteWishView: View {
 
     private func letGoIfNeeded(_ drag: DragGesture.Value) {
         let isFarEnough = drag.translation.height <= -WriteWishSettings.swipeUpDistance
-        // velocity is the speed at the moment the finger is lifted
         let isFastEnough = drag.velocity.height <= -WriteWishSettings.swipeUpSpeed
         if isFarEnough && isFastEnough {
+            guard step < .flying else { return }   // never save twice
+            modelContext.insert(ReleasedLantern(type: selectedLanternType, wish: wishText))
+
             withAnimation(.easeInOut(duration: WriteWishSettings.lanternFlyDuration)) {
                 step = .flying
                 lanternDragOffset = 0
             }
+            Task {
+                try? await Task.sleep(for: .seconds(4))
+                dismiss()
+            }
         } else {
-            // Not enough: it goes back down
             withAnimation(.spring(duration: 0.4)) {
                 lanternDragOffset = 0
             }
