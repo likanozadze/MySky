@@ -5,30 +5,6 @@
 //  Created by Lika Nozadze on 16/10/2026.
 //
 
-// ------------------------------------------------------------------------------------
-// We can use .goFloating on any view
-// Image(...)
-// .goFloating()
-//
-// OR if you want to specify different floating settings for different images you can do:
-// Image(...)
-// .goFloating(
-//  floatX: 4,
-//  floatY: 15,
-//  tilt: 3,
-//  speedX: 0.6,
-//  speedY: 0.8,
-//  tiltSpeed: 0.5
-// )
-//
-// To start floating only at some point, pass intensity (0 = still, 1 = full floating) and animate it:
-// Image(...)
-// .goFloating(intensity: isFloating ? 1 : 0)
-// .animation(.easeInOut(duration: 1.5), value: isFloating)
-//
-// TODO: we can have a phase just like the Sky so multiple views do not animate in sync and look all the same
-// ------------------------------------------------------------------------------------
-
 import SwiftUI
 
 // Default floating settings (the ones that apply in the .goFloating() call version with no parameters)
