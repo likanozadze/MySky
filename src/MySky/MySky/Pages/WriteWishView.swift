@@ -96,6 +96,7 @@ struct WriteWishView: View {
         .onTapGesture {
                     isTextFieldFocused = false
                 }
+        .toolbar(.hidden, for: .tabBar)
     }
 
 }
