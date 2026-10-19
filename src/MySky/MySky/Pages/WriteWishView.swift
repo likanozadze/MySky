@@ -36,7 +36,7 @@ enum WriteWishSettings {
     static let lanternWidth: CGFloat = 200
 
     static let lanternWriting = LanternPlacement(x: 0, y: -120, scale: 1.0)   // while writing (keyboard closed)
-    static let lanternTyping = LanternPlacement(x: 0, y: -120, scale: 1.0)    // while typing (keyboard open), it can move up so the text field doesn't cover it
+    static let lanternTyping = LanternPlacement(x: 0, y: -230, scale: 0.6)    // while typing (keyboard open), it can move up so the text field doesn't cover it
     static let lanternReleased = LanternPlacement(x: 0, y: -280, scale: 0.45) // after pressing Release
     static let lanternLighting = LanternPlacement(x: 0, y: -120, scale: 1.0)  // after the match is on fire, it comes down again so we can light it
     static let lanternFlown = LanternPlacement(x: 0, y: -300, scale: 0.2)     // after the swipe up, it flies up in the sky and becomes small
@@ -224,42 +224,42 @@ struct WriteWishView: View {
     }
 
     // MARK: - Body
-
     var body: some View {
-        ZStack {
-            SkyBackground()
-
-            lanternLayer
-
-            lanternFireHint
-
-            if isReleasing == false {
-                writingControls
+        Color.clear
+            .overlay {
+                if isReleasing == false {
+                    writingControls
+                }
             }
+            .background {
+                ZStack {
+                    SkyBackground()
 
-            if isReleasing {
-                matchboxLayer
+                    lanternLayer
+
+                    lanternFireHint
+
+                    if isReleasing {
+                        matchboxLayer
+                    }
+
+                    letGoHint
+
+                    closingLine
+
+                    if isLanternLit && isLanternFlying == false {
+                        swipeUpLayer
+                    }
+
+                    if isMatchTaken {
+                        matchLayer
+                    }
+                }
             }
-
-            letGoHint
-            
-            closingLine
-
-            if isLanternLit && isLanternFlying == false {
-                swipeUpLayer
-            }
-
-            if isMatchTaken {
-                matchLayer
-            }
-        }
-        .onTapGesture {
-            isTextFieldFocused = false
-        }
-        .toolbar(.hidden, for: .tabBar)
-        .sensoryFeedback(.impact(weight: .medium), trigger: isMatchLit)
-        .sensoryFeedback(.success, trigger: isLanternLit)
-        .sensoryFeedback(.impact(weight: .light), trigger: isLanternFlying)
+            .toolbar(.hidden, for: .tabBar)
+            .sensoryFeedback(.impact(weight: .medium), trigger: isMatchLit)
+            .sensoryFeedback(.success, trigger: isLanternLit)
+            .sensoryFeedback(.impact(weight: .light), trigger: isLanternFlying)
     }
 
     // MARK: - Lantern
@@ -342,7 +342,12 @@ struct WriteWishView: View {
             }
         }
         .padding(.bottom, 60)
-        .transition(.opacity)
+        .background(
+                    Color.clear
+                        .contentShape(Rectangle())
+                        .onTapGesture { isTextFieldFocused = false }
+                )
+                .transition(.opacity)
     }
 
     private func release() {
@@ -670,8 +675,9 @@ struct WriteWishView: View {
     private func letGoIfNeeded(_ drag: DragGesture.Value) {
         let isFarEnough = drag.translation.height <= -WriteWishSettings.swipeUpDistance
         let isFastEnough = drag.velocity.height <= -WriteWishSettings.swipeUpSpeed
+       
         if isFarEnough && isFastEnough {
-            guard step < .flying else { return }   // never save twice
+            guard step < .flying else { return }
             modelContext.insert(ReleasedLantern(type: selectedLanternType, wish: wishText))
 
             withAnimation(.easeInOut(duration: WriteWishSettings.lanternFlyDuration)) {
@@ -679,7 +685,7 @@ struct WriteWishView: View {
                 lanternDragOffset = 0
             }
             Task {
-                try? await Task.sleep(for: .seconds(4))
+                try? await Task.sleep(for: .seconds(WriteWishSettings.lanternFlyDuration))
                 dismiss()
             }
         } else {
