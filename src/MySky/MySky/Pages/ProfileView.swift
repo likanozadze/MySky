@@ -242,24 +242,66 @@ enum ReminderScheduler {
 }
 
 struct AboutRitualView: View {
+    private let steps = [
+        ("Write", "Put it into words what you are holding onto."),
+        ("Light", "Strike a match to ignite your intention."),
+        ("Release", "Watch your lantern drift into the sky.")
+    ]
+
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("The ritual")
-                    .font(.largeTitle.bold())
-                Text("")
-                    .font(.system(size: 17, design: .serif))
-                    .italic()
+            VStack(spacing: 24) {
+                Text("About the ritual")
+                    .font(.system(size: 30, weight: .bold))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Lantern(type: .lanternYellow, width: 70, glowRadius: 20)
+
+                Text("For centuries, sky lanterns have carried wishes and worries into the night. In China they are called Kongming lanterns, released during the Lantern Festival as a sign of hope and of letting go.")
+                    .font(.system(size: 15))
+                    .lineSpacing(4)
+                    .foregroundStyle(.white.opacity(0.9))
+
+                Text("How it works")
+                    .font(.system(size: 18, weight: .semibold))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                VStack(spacing: 0) {
+                    ForEach(steps.indices, id: \.self) { i in
+                        HStack(spacing: 14) {
+                            Text("\(i + 1)")
+                                .font(.system(size: 14, weight: .semibold))
+                                .frame(width: 30, height: 30)
+                                .overlay(Circle().stroke(.orange, lineWidth: 2))
+
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(steps[i].0)
+                                    .font(.system(size: 16, weight: .semibold))
+                                Text(steps[i].1)
+                                    .font(.system(size: 13))
+                                    .foregroundStyle(.white.opacity(0.7))
+                            }
+                            Spacer()
+                        }
+                        .padding(.vertical, 14)
+
+                        if i < steps.count - 1 {
+                            Divider().overlay(.white.opacity(0.2))
+                        }
+                    }
+                }
+                .padding(.horizontal, 16)
+                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 20))
             }
             .foregroundStyle(.white)
-            .padding(24)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 24)
+            .padding(.bottom, 24)
         }
         .background(SkyBackground())
+        .toolbar(.hidden, for: .tabBar)
         .preferredColorScheme(.dark)
     }
 }
-
 
 extension LanternType {
     var title: String {
