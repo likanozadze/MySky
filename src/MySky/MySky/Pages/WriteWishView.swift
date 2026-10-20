@@ -571,6 +571,7 @@ struct WriteWishView: View {
         }
 
         if speed >= WriteWishSettings.strikeSpeed && distance <= WriteWishSettings.strikeDistance {
+            SoundPlayer.shared.play("match-strike1", ext: "mp3")
             withAnimation(.easeInOut(duration: WriteWishSettings.lanternComeDownDuration)) {
                 step = .matchLit
             } completion: {

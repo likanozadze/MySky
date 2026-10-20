@@ -19,6 +19,9 @@ final class ReleasedLantern {
     var y: Double = 0.5
     var scale: Double = 1.0
 
+    var skyX: Double?
+      var skyY: Double?
+    
     var type: LanternType { LanternType(rawValue: typeRaw) ?? .lanternYellow }
 
     init(type: LanternType, wish: String) {
