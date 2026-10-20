@@ -28,8 +28,6 @@ struct MainTabView: View {
     }
     
     var body: some View {
-        // The NavigationStack is outside the TabView, so the pages we push (like WriteWishView)
-        // cover the tab bar too, instead of hiding it (that made the page snap when going back)
         NavigationStack {
             TabView {
                 LanternView()
@@ -38,7 +36,8 @@ struct MainTabView: View {
                     }
                 MyLanternsView()
                     .tabItem { Label("Lanterns", systemImage: "lightbulb.fill") }
-                Text("Profile").tabItem { Label("Profile", systemImage: "person")}
+                ProfileView()
+                    .tabItem { Label("Profile", systemImage: "person") }
             }
             .tint(.white)
         }
