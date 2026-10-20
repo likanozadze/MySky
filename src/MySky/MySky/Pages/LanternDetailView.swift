@@ -35,7 +35,6 @@ struct LanternDetailView: View {
         .padding(.top, 30)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(SkyBackground())
-        .preferredColorScheme(.dark)
         .confirmationDialog("Delete this lantern?",
                             isPresented: $showDeleteConfirmation,
                             titleVisibility: .visible) {

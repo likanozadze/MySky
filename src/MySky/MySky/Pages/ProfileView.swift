@@ -80,7 +80,7 @@ struct ProfileView: View {
             }
             .safeAreaPadding(.top, 80)
         }
-        .preferredColorScheme(.dark)
+
         
         .alert("Your name", isPresented: $isEditingName) {
             TextField("Your Name", text: $draftName)
@@ -299,7 +299,7 @@ struct AboutRitualView: View {
         }
         .background(SkyBackground())
         .toolbar(.hidden, for: .tabBar)
-        .preferredColorScheme(.dark)
+
     }
 }
 

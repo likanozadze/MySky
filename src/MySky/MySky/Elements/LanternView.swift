@@ -32,7 +32,7 @@ struct LanternView: View {
                     .multilineTextAlignment(.center)
 
 
-                GlassEffectContainer(spacing: 20) {
+             
                     LazyVGrid(
                         columns: [
                             GridItem(.flexible(), spacing: 20),
@@ -48,7 +48,7 @@ struct LanternView: View {
                             .buttonStyle(.plain)
                         }
                     }
-                }
+                
                 .padding(.horizontal, 25)
 
                 Spacer()
