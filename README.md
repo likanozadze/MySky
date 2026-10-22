@@ -10,6 +10,7 @@ Built for the Daiquiri Challenge at the Apple Developer Academy in Naples.
 
 <img width="1206" height="2622" alt="Image" src="https://github.com/user-attachments/assets/f470e784-75a6-48e1-81dc-25da78a226ac" />
 
+<img width="800" height="1739" alt="Image" src="https://github.com/user-attachments/assets/7991d644-862d-4410-a44c-ce8738d325f4" />
 
 ## How It Works
 
