@@ -6,8 +6,9 @@ MySky is an iPhone app based on the old tradition of sky lanterns, made into a s
 
 Built for the Daiquiri Challenge at the Apple Developer Academy in Naples.
 
-<img width="180" height="368" alt="Image" src="https://github.com/user-attachments/assets/4832dcda-7843-4f6f-8e5e-9d450f347980" />
-<img width="176" height="364" alt="Image" src="https://github.com/user-attachments/assets/7115f4b0-4ce6-4a20-a4af-949a091ee851" />
+https://github.com/user-attachments/assets/fedae146-5308-4729-9d1d-fbf14b7c662a
+
+https://github.com/user-attachments/assets/9435d2c8-3009-47e8-b226-9a4a2d47252b
 
 ## How It Works
 
