@@ -32,4 +32,4 @@ SwiftUI, Liquid Glass, SwiftData, and custom gestures and animation (with Reduce
 
 ## Team
 
-Lika, Fati, Mattia and Salma, Apple Developer Academy, Naples.
+Lika, Fati, Mattia and Salma, Apple Developer Academy, Naples
